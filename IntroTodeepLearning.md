@@ -53,11 +53,11 @@ Some useful links if you don't want to read this section:
 ![simplerNN](https://i.gyazo.com/511d2bbf4aee74c1be4afcd4ed847ea7.png)
 Above is a simple Neural Network. There are two input, two hidden, and one output node. Information flows from the input nodes to the hidden nodes and finally to the output node. w stands for weight: they represent how much of an effect an input has on the next node. 
 
-The input to node h1 is the sum of x1 \times w11 and x2 \times w21. The input to node h2 is the sum of x1 \times w12 and x2 \times w22.
+The input to node h1 is the sum of x1 x w11 and x2 x w21. The input to node h2 is the sum of x1 x w12 and x2 x w22.
 
 This allows the network to learn *representations* or *features* inherent in the data. Note that this means that biases can also be learned in the data, which is why good and well-formed data is integral to a good model. The learning algorithms are only as good as the data we provide it.
 
-The input to the output node is the sum of h1 \times w3 and h2 \times w4.
+The input to the output node is the sum of h1 x w3 and h2 x w4.
 
 This allows the network to combine its knowledge of features to decide on an output. In deeper networks, or networks with more layers, the algorithm can learn simple representations and along each layer combine them into more complex representations. An example in image recognition is the network can recognize lines, which combine into shapes, which combine into small objects, which finally combine into the main subject of the image.
 

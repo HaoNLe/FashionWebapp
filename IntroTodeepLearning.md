@@ -49,8 +49,7 @@ Theoretically, any. See [Universal Approximation Theorem](https://towardsdatasci
 
 ## Resources
 ### Comprehensive Resources
-* [Neural Networks and Deep Learning - Michael Nielson] 
-(http://neuralnetworksanddeeplearning.com) - a general good overview
+* [Neural Networks and Deep Learning - Michael Nielson](http://neuralnetworksanddeeplearning.com) - a general good overview
 * [Deep Learning - Ian Goodfellow, Yoshua Bengio, Aaron C. Courville ](https://github.com/janishar/mit-deep-learning-book-pdf) - a one-stop comprehensive resource
 * [Beginner's Guide to Neural Networks and Deep Learning - skymind](https://skymind.ai/wiki/neural-network)
 

@@ -6,6 +6,9 @@ Deep learning is a deep topic. It also happens to have a large vocabulary so don
 * Overview
 * Basic Neural Network
 * Activation Functions
+* Optimization
+* Generalizing Models
+* Dealing with data
 * Resources
 
 ## Overview
@@ -84,11 +87,63 @@ The output of the output nodes also undergo an activation function.
 The final difference is that now there are two output nodes. One output node suffices for *binary classification* (think hotdog not hotdog) but can get clunky if you try to fit in more than two possible outcomes. For example: having an output of 
 >[0 .33] = hotdog, (.33, .67) = burger, [.67 1] = sandwich
 
-can make it difficult for the machine.
+is worse for the people and machine involved as opposed to having 1 output node for each outcome. There are also mathematical reasons behind this: what if an item was half sandwich half hotdog? These two items are at the ends of the distribution and as such the machine might output a value that is in the middle, completely misclassifying the item as a burger. The reason why this happens is because there is no linear relationship between hotdogs, burgers, and sandwiches. Burgers aren't necessarily half hotdog and half sandwich so representing all three on a single scale of 0 to 1 is incorrect. This idea will be important for structured data and categorical variables (though we won't be using these for our project).
 
-Having multiple output nodes increases the flexibility in what our machine can tell us about the data. For image recognition, having an output node per possible label is not uncommon. In this example, OA1 would tell you how much the machine believes its a hotdog, and OA2 would tell you much the machine believes its a burger.
+Having multiple output nodes increases the flexibility in what our machine can tell us about the data. For image recognition, networks have an output node per category and this allows the network to express how likely an image is multiple things. In this example, OA1 would tell you how much the machine believes its a hotdog, and OA2 would tell you much the machine believes its a burger. If, continuing the example, both OA1 and OA2 return 1, we can conclude that the network believes the image is a hotdog and a burger. I.e. the classifier cannot tell if it is one or the other.
 
 ## Activation Functions
+Some useful links if you don't want to read this section:
+
+* [Understanding Activation Functions](https://medium.com/the-theory-of-everything/understanding-activation-functions-in-neural-networks-9491262884e0)
+* [A Practical Guide to Relu](https://medium.com/tinymind/a-practical-guide-to-relu-b83ca804f1f7)
+* [Activation Functions Cheatsheet](https://ml-cheatsheet.readthedocs.io/en/latest/activation_functions.html)
+
+Pay attention because these are important.
+
+* Sigmoid
+* Tanh
+* ReLu (and its variations)
+* Softmax 
+
+Neural networks are inspired by biological neurons. These neurons take inputs and "fire" a signal to its output neurons. Whether it a signal is fired or not depends on how strong the inputs are. Likewise, activation functions determine whether or not a node in a neural network fires a signal and how strong that signal is to its downstream nodes.
+
+A common activation function is the sigmoid:
+
+![sigmoid](https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Sigmoid-function-2.svg/2000px-Sigmoid-function-2.svg.png)
+
+It's smooth and limits the output to be within (0, 1). So if a node had an input of 10, its output would be very close to 1 using the sigmoid activation.
+
+Here is the sigmoid (labeled as logistic) plotted against the tanh and linear activation functions:
+
+![3actfuncts](https://theclevermachine.files.wordpress.com/2014/09/nnet-error-functions2.png?w=700&h=352)
+
+Note that linear activation isn't a great function to use in most cases. Also note that tanh is a transformed sigmoid like so:
+
+> tanh(x) = 2 sigmoid(2x) - 1
+
+Why is linear activation not so great? Let's pay attention to the derivatives in the above image. The derivatives of activation functions are used in an optimization technique called *gradient descent*. Basically, we're searching for the minima of a function and we're using the slope of the function as a way to figure out which direction to move in. In a 2d graph we'd either be moving left or right (increase or decrease x). 
+
+Linear functions have the same derivative regardless of its input, thus the algorithm cannot tell which direction to modify the inputs to improve. (Don't think too hard on this as we'll be going into more detail later)
+
+However this isn't the biggest issue. The biggest issue is of the mathematical sort. In a deep neural network, we can think of each hidden layer as a function that takes input from the previous layer and outputs to the next layer. So, we "stack" layers to solve a problem, which can be rephrased as we composite functions to approximate some solution function. When we composite linear functions, what we get at the end is another linear function. It doesn't matter how many linear functions you "stack" you will get a linear function at the end of it all. This severely limits what sort of problems we can solve. For more info read the article on the [Universal Approximation Theorem](https://towardsdatascience.com/can-neural-networks-really-learn-any-function-65e106617fc6).
+
+So what's the deal with ReLU then if linear activations aren't so great? Lets take a look at it's graph:
+
+![ReLU](https://www.researchgate.net/publication/323956667/figure/fig1/AS:607180243861515@1521774459242/The-Rectified-Linear-Unit-ReLU-activation-function-produces-0-as-an-output-when-x-0.png)
+
+While the positive side is linear, the negative side is not. This introduces non-linearity into an otherwise straight line. So ReLU doesn't deal with the same problem as a naive linear activation. However there are still issues with ReLU.
+
+Let's pay attention to the negative side of ReLU. The slope there is 0 regardless of close the input is to 0 when the input is negative. This can result in something called "dead" neurons. When a neuron begins to get negative input, it'll be unlikely that the neuron will ever recover out of that since gradient descent can only see that the slope is 0 (it can't tell which direction to adjust the input weights). For more info read [A Practical Guide to Relu](https://medium.com/tinymind/a-practical-guide-to-relu-b83ca804f1f7).
+
+This image graphs the variants of ReLU created to address this issue with ReLU. Notice there are now non-zero slopes associated with the negative half of the space.
+
+![ReLU Variants](https://i0.wp.com/laid.delanover.com/wp-content/uploads/2017/08/elu.png)
+
+Finally, another activation function for multi-class classifiers is [softmax](https://en.wikipedia.org/wiki/Softmax_function), which outputs a categorical distribution - a probability distribution over *K* different possible outcomes. So given multiple outputs, softmax takes these and turns them into values that are within [0, 1] and sum up to 1. We basically get the percentage of how confident the network is for each possible output. Example: [0.87 hotdog, 0.06 burger, 0.07 sandwich]
+
+## Gradient Descent
+
+
 
 ## Resources
 ### Comprehensive Resources

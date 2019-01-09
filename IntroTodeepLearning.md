@@ -45,7 +45,23 @@ Deep learning creates its own representations of the data and this has been show
 Theoretically, any. See [Universal Approximation Theorem](https://towardsdatascience.com/can-neural-networks-really-learn-any-function-65e106617fc6). Deep learning currently handles problems such as natural language processing and image recognition well.
 
 ## A Bit Deeper
+Some useful links if you don't want to read this section:
 
+* [What is a neural network](https://www.youtube.com/watch?v=aircAruvnKk)
+* [Quick intro to neural networks](https://ujjwalkarn.me/2016/08/09/quick-intro-neural-networks)
+
+![simplerNN](https://i.gyazo.com/511d2bbf4aee74c1be4afcd4ed847ea7.png)
+Above is a simple Neural Network. There are two input, two hidden, and one output node. Information flows from the input nodes to the hidden nodes and finally to the output node. w stands for weight: they represent how much of an effect an input has on the next node. 
+
+The input to node h1 is the sum of x1 \times w11 and x2 \times w21. The input to node h2 is the sum of x1 \times w12 and x2 \times w22.
+
+This allows the network to learn *representations* or *features* inherent in the data. Note that this means that biases can also be learned in the data, which is why good and well-formed data is integral to a good model. The learning algorithms are only as good as the data we provide it.
+
+The input to the output node is the sum of h1 \times w3 and h2 \times w4.
+
+This allows the network to combine its knowledge of features to decide on an output. In deeper networks, or networks with more layers, the algorithm can learn simple representations and along each layer combine them into more complex representations. An example in image recognition is the network can recognize lines, which combine into shapes, which combine into small objects, which finally combine into the main subject of the image.
+
+![simpleNN](https://dzone.com/storage/temp/7913025-neural-network.png)
 
 ## Resources
 ### Comprehensive Resources
@@ -58,6 +74,7 @@ Theoretically, any. See [Universal Approximation Theorem](https://towardsdatasci
 * [Gradient descent, how neural networks learn](https://www.youtube.com/watch?v=IHZwWFHWa-w)
 
 ### Topical Resources
+* [Quick intro to neural networks](https://ujjwalkarn.me/2016/08/09/quick-intro-neural-networks)
 * [Backpropagation Algorithm](http://colah.github.io/posts/2015-08-Backprop/)
 * [Batch-norm](https://www.quora.com/What-is-a-batch-norm-in-machine-learning)
 * [Structured Data in Deep Learning](https://towardsdatascience.com/structured-deep-learning-b8ca4138b848)

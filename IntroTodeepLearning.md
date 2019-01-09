@@ -1,10 +1,11 @@
 
 # Introduction to Deep Learning
-Deep learning is a deep topic. Let's Dive in.
+Deep learning is a deep topic. It also happens to have a large vocabulary so don't fret if you feel overwhelmed: keep calm and ask google. Let's dive in.
 
 ## Table of Contents
 * Overview
-* A bit deeper
+* Basic Neural Network
+* Activation Functions
 * Resources
 
 ## Overview
@@ -44,13 +45,14 @@ Deep learning creates its own representations of the data and this has been show
 #### What problems can deep learning solve?
 Theoretically, any. See [Universal Approximation Theorem](https://towardsdatascience.com/can-neural-networks-really-learn-any-function-65e106617fc6). Deep learning currently handles problems such as natural language processing and image recognition well.
 
-## A Bit Deeper
+## Basic Neural Network
 Some useful links if you don't want to read this section:
 
-* [What is a neural network](https://www.youtube.com/watch?v=aircAruvnKk)
-* [Quick intro to neural networks](https://ujjwalkarn.me/2016/08/09/quick-intro-neural-networks)
+* [What is a neural network](https://www.youtube.com/watch?v=aircAruvnKk) (video)
+* [Quick intro to neural networks](https://ujjwalkarn.me/2016/08/09/quick-intro-neural-networks) (blog post)
 
 ![simplerNN](https://i.gyazo.com/511d2bbf4aee74c1be4afcd4ed847ea7.png)
+
 Above is a simple Neural Network. There are two input, two hidden, and one output node. Information flows from the input nodes to the hidden nodes and finally to the output node. w stands for weight: they represent how much of an effect an input has on the next node. 
 
 The input to node h1 is the sum of x1 x w11 and x2 x w21. The input to node h2 is the sum of x1 x w12 and x2 x w22.
@@ -62,6 +64,31 @@ The input to the output node is the sum of h1 x w3 and h2 x w4.
 This allows the network to combine its knowledge of features to decide on an output. In deeper networks, or networks with more layers, the algorithm can learn simple representations and along each layer combine them into more complex representations. An example in image recognition is the network can recognize lines, which combine into shapes, which combine into small objects, which finally combine into the main subject of the image.
 
 ![simpleNN](https://dzone.com/storage/temp/7913025-neural-network.png)
+
+This above image introduces some new things from the previous image. 
+
+There is now an extra node in each layer called a *bias node* that will always output 1. The weights for the bias nodes determine how strong the bias is. This provides flexibility to the network by providing a value that is independent of the input. For example, let's assume all nodes can have some value between 0 and 1. If the output of h1 and h2 were 0, the network's output would always be 0 in this case since any weight multiplied by 0 is 0. By introducing the bias node, h1 = h2 = 0 can result in a final output of anything between [0, 1].
+
+The second difference is that the hidden nodes and output nodes now have two halves to them. This is quite an uncommon way to draw out nodes but it'll help to explain the concept of *activation functions*. HAi represents the *activation function* of hidden node i.
+
+After multiplying the inputs by their respective weights and summing them into the hidden nodes, each hidden node will run an *activation function* f() to provide an output to the nodes in the next layer. So the output of H1 will be
+
+> HA1 = f(I1 x W1 + I2 x W3)
+
+and the output of H2 will be
+
+> HA2 = f(I1 x w2 + I2 x w4)
+
+The output of the output nodes also undergo an activation function.
+
+The final difference is that now there are two output nodes. One output node suffices for *binary classification* (think hotdog not hotdog) but can get clunky if you try to fit in more than two possible outcomes. For example: having an output of 
+>[0 .33] = hotdog, (.33, .67) = burger, [.67 1] = sandwich
+
+can make it difficult for the machine.
+
+Having multiple output nodes increases the flexibility in what our machine can tell us about the data. For image recognition, having an output node per possible label is not uncommon. In this example, OA1 would tell you how much the machine believes its a hotdog, and OA2 would tell you much the machine believes its a burger.
+
+## Activation Functions
 
 ## Resources
 ### Comprehensive Resources

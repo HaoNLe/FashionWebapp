@@ -259,8 +259,10 @@ In the loss table above we can see that by epoch 20 we've overfit. We can tell b
 
 An example of this occurs on Kaggle, the data science competition website. Here, users get graded on a public and private test set. The public test set serves as a heuristic for users on how their model is performing. The private test set is for the final judgement (1st place, 2nd place, etc...). What ends up happening is people will make many submissions and over time overfit their models to the public leaderboard. When the private leaderboard is released they see that they have dropped many places in the ranking because their model has overfit.
 
-## Dealing with Data
+## Dealing with Data (Optional)
 This section will cover how to split the data into training, validation, and test sets, how to deal with structured data, and how to deal with sequential data.
+
+Disclaimer: Theres a great deal more to know when it comes to working with data. This only covers the basics for deep learning. See [here](https://data.berkeley.edu/degrees/data-science-ba) for more.
 
 #### Splitting Data
 
@@ -303,6 +305,8 @@ But now we want to go bigger than bag of words. We're working with *deep* neural
 ![RNN](https://www.researchgate.net/profile/Ramon_Quiza/publication/234055140/figure/fig3/AS:299964002521099@1448528399394/Graph-of-a-recurrent-neural-network.png)
 
 Notice the connections from the output layer *back* to the hidden layer. Unlike *feed-forward networks* (networks that only move in one direction), this network sends data back into the network. This is because the word that came before the current word can vastly alter the overall phrase's meaning. For example: not good vs. quite good.
+
+For more checkout [An Intro to RNNs](https://medium.com/explore-artificial-intelligence/an-introduction-to-recurrent-neural-networks-72c97bf0912).
 
 ## Resources
 ### Comprehensive Resources

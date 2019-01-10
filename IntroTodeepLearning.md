@@ -1,6 +1,6 @@
 
 # Introduction to Deep Learning
-Deep learning is a deep topic. It also happens to have a large vocabulary so don't fret if you feel overwhelmed: keep calm and ask google. Let's dive in.
+Deep learning is a deep topic (pun intended). It also happens to have a large vocabulary so don't fret if you feel overwhelmed: keep calm and ask google. There are links provided throughout this document as a resource for you to read into the topics though they are not necessary. Let's dive in.
 
 ## Table of Contents
 * Overview
@@ -65,6 +65,13 @@ This allows the network to learn *representations* or *features* inherent in the
 The input to the output node is the sum of h1 x w3 and h2 x w4.
 
 This allows the network to combine its knowledge of features to decide on an output. In deeper networks, or networks with more layers, the algorithm can learn simple representations and along each layer combine them into more complex representations. An example in image recognition is the network can recognize lines, which combine into shapes, which combine into small objects, which finally combine into the main subject of the image.
+
+
+Also notice that the operations from input layer to hidden layer resemble that of a matrix vector multiplication.
+
+![matrixweights](https://i.gyazo.com/5e20fe51922a5a29dfcc70581ef3706e.png)
+
+Linear algebra is quite important for understanding machine learning. You can see here that the weights can be represented as a matrix. As the network increases in complexity, the algorithms will be dealing with higher dimension matrices aka *tensors*. For now lets think of each weight as a *parameter*.
 
 ![simpleNN](https://dzone.com/storage/temp/7913025-neural-network.png)
 
@@ -133,7 +140,9 @@ So what's the deal with ReLU then if linear activations aren't so great? Lets ta
 
 While the positive side is linear, the negative side is not. This introduces non-linearity into an otherwise straight line. So ReLU doesn't deal with the same problem as a naive linear activation. However there are still issues with ReLU.
 
-Let's pay attention to the negative side of ReLU. The slope there is 0 regardless of close the input is to 0 when the input is negative. This can result in something called "dead" neurons. When a neuron begins to get negative input, it'll be unlikely that the neuron will ever recover out of that since gradient descent can only see that the slope is 0 (it can't tell which direction to adjust the input weights). For more info read [A Practical Guide to Relu](https://medium.com/tinymind/a-practical-guide-to-relu-b83ca804f1f7).
+Let's pay attention to the negative side of ReLU's graph. The slope there is 0 regardless of close the input is to 0 when the input is negative. This can result in something called "dead" neurons. When a neuron begins to get negative input, it'll be unlikely that the neuron will ever recover out of that since gradient descent can only see that the slope is 0 (it can't tell which direction to adjust the input weights). For more info read [A Practical Guide to Relu](https://medium.com/tinymind/a-practical-guide-to-relu-b83ca804f1f7).
+
+However the non-saturating nature of ReLU does provide a substantial boost to training speed. See this [paper](http://www.cs.toronto.edu/~fritz/absps/imagenet.pdf) page 3. Non-saturating means the activation function does not "squeeze" the input like a sigmoid or tanh does.
 
 This image graphs the variants of ReLU created to address this issue with ReLU. Notice there are now non-zero slopes associated with the negative half of the space.
 
@@ -141,9 +150,159 @@ This image graphs the variants of ReLU created to address this issue with ReLU. 
 
 Finally, another activation function for multi-class classifiers is [softmax](https://en.wikipedia.org/wiki/Softmax_function), which outputs a categorical distribution - a probability distribution over *K* different possible outcomes. So given multiple outputs, softmax takes these and turns them into values that are within [0, 1] and sum up to 1. We basically get the percentage of how confident the network is for each possible output. Example: [0.87 hotdog, 0.06 burger, 0.07 sandwich]
 
-## Gradient Descent
+## Optimization
+Some useful links if you don't want to read this section:
 
+* [Gradient Descent Cheatsheet](https://ml-cheatsheet.readthedocs.io/en/latest/gradient_descent.html)
+* [Loss Functions Cheatsheet](https://ml-cheatsheet.readthedocs.io/en/latest/loss_functions.html)
+* [Common Loss Functions in Machine Learning](https://towardsdatascience.com/common-loss-functions-in-machine-learning-46af0ffc4d23) 
 
+So we now know that neural networks are a series of node layers. Each node takes in inputs and computes the activation function which is then sent as input to the next layer. Each connection from a node to the next is defined with a weight value that determines how much impact a node has on a node in the next layer. Now let's talk about how the algorithm learns what weights solve the problem.
+
+Before the algorithm can optimize it needs to know what to optimize. Let us first define a *loss function*. A loss function tells us (and the algorithm) how good the model is. For more info read [Common Loss Functions in Machine Learning](https://towardsdatascience.com/common-loss-functions-in-machine-learning-46af0ffc4d23)
+
+Something to take note of is that we do not optimize the loss function *directly*. We do not change the loss function. We change the *parameters* i.e. the *weights* of the model in the hopes that we improve the loss function's result. This is a difference between learning and pure optimization.
+
+![gradient_descent_2d](https://cdn-images-1.medium.com/max/1600/0*rBQI7uBhBKE8KT-X.png)
+
+So we have a loss function. A loss function can be visualized as a curve. We need to know in which direction to adjust the weights such that the loss function is minimized. This is where gradient descent comes in. If you recall from calculus, a gradient is the derivative of a multi-variable function. Each weight here is a variable so when we have large networks our gradients are also large in terms of complexity.
+
+>Given f(x, y) the gradient is: (df/dx, df/dy)
+
+Remember that each layer depends on the input from another layer so our gradients can become difficult to compute as we increase the number of layers. You may have heard the term *backpropagation*. In machine learning, backpropagation is a clever implementation of the chain rule and is used to quickly calculate the gradient of neural networks.
+
+Now that we have calculated the gradient, we can "see" in what direction adjust our parameters to reduce our cost function. Watch [Gradient descent, how neural networks learn](https://www.youtube.com/watch?v=IHZwWFHWa-w) for a comprehensive explanation. See the below image for an example of gradient descent in 3d:
+
+![gradient_descent_3d](https://www.sciencemag.org/sites/default/files/styles/inline__450w__no_aspect/public/ma_0504_NID_alchemy_WEB.jpg?itok=OzWhcdrK)
+
+Now how does gradient descent actually run? We know that we have a loss function and we compute the gradient to understand how to adjust our parameters. When do we adjust the parameters? How much do we adjust them by?
+
+Let us assume our network is tasked with learning to distinguish between hotdog not hotdog. Typically gradient descent begins by initializing our parameters randomly and then running each data sample through the model. It then computes the loss function output of the predicted values vs. the labeled values - basically outputs some number that indicates how accurate the model is in predicting whether an image is a hotdog or not. It then utilizes backpropagation to calculate the gradient - how does each weight affect the accuracy of our model - and adjusts the weights to make the model more accurate. Rinse and repeat.
+
+So in our example we adjust the parameters after running through the entire dataset. We make the network compute the prediction of every datapoint before "learning" from our results. This can get extremely expensive when datasets are large. Introducing *stochastic* gradient descent [here](https://developers.google.com/machine-learning/crash-course/reducing-loss/stochastic-gradient-descent) and [here](http://deeplearning.stanford.edu/tutorial/supervised/OptimizationStochasticGradientDescent/). 
+Stochastic Gradient Descent optimizes by updating the weights or "learning" after a subset of data - called a *batch* - as opposed to the entire dataset.
+
+So now we know when we update the weights. What about how much do we change them? See the below image for a visualization:
+
+![Learning_Rate_Image](https://cdn-images-1.medium.com/max/1600/0*QwE8M4MupSdqA3M4.png)
+
+The *learning rate* is exactly that: how much our algorithm adjusts its weights or learn with each step. With a large rate we risk divergent behavior, an example of which is where we bounce back and forth and never reach a minimum. With a small rate we waste computational hours by taking longer to train our models. Introducing learning rate annealment.
+
+![Learning_Rate_Annealment](https://cdn-images-1.medium.com/max/1600/1*iSZv0xuVCsCCK7Z4UiXf2g.jpeg)
+
+An *epoch* is when the entire dataset has been learned from once. So epoch 20 means we cycling through the data for the 20th time. Note that this is different from batches, which signify the amount of data we cycle through before we update the model.
+
+Learning rate annealment is when we adjust our rate as time goes on. The rationale being that when we first begin the algorithm we do not have a good sense of where the optimum is so we search far and wide. As time goes on and the model starts to converge, we reduce our learning rate as a way to finesse the model into an optimum. To read more in depth visit [here](http://cs231n.github.io/neural-networks-3/#anneal).
+
+What if there are multiple minimums and we get stuck in one of them? Like in this picture:
+
+![stuck](https://cdn-images-1.medium.com/max/800/1*0k0dUpICE5BJe6VQFmBLJA.png)
+
+Sometimes we like to increase the learning rate again in the hopes that we find a better minimum like so:
+
+![sgdr](https://cdn-images-1.medium.com/max/800/1*5T8mc-cCBabeGYVSG3VPBw.png)
+
+We can do this with [Stochastic Gradient Descent with Restarts](https://towardsdatascience.com/https-medium-com-reina-wang-tw-stochastic-gradient-descent-with-restarts-5f511975163). Basically with this version of SGD the learning rate now looks like this:
+
+![sgdr_lr](https://cdn-images-1.medium.com/max/1200/1*nBTMGa3WqhS2Iq4gCeCZww.png)
+
+In this example each subsequent learning decay period lasts longer. The rationale is similar to what motivated learning rate annealing in the first place: get a quick overview of the terrain and then slowly converge into a minima.
+
+There are other optimization methods such as [Adam](https://machinelearningmastery.com/adam-optimization-algorithm-for-deep-learning/) (and the fixed version [AdamW](https://www.fast.ai/2018/07/02/adam-weight-decay/)) and [Stochastic Gradient Descent with Momentum](https://towardsdatascience.com/stochastic-gradient-descent-with-momentum-a84097641a5d). Feel free to read up on these on your own time.
+
+## Generalizing Models
+
+So far we've learned what neural nets are, what math functions they consist of, and how they learn. Now let's talk about how sometimes our models can *overfit* the problem. Overfit happens in real life when students memorize how to do specific problems, but fail to generalize techniques to other similar problems. Example: memorizing that 2x2 is 4 but being unable to solve 2x3. The same thing can happen to neural networks. We want out models to do well with data it hasn't seen before and this is called the model's ability to *generalize*.
+
+An example of a neural network overfitting is if it can distinguish dogs but only if its long-haired, in a sitting position, and is light colored. It fails to generalize and would not recognize a running chihuahua as a dog. There can be many reasons as to why this particular model has overfit.
+
+![overfit](https://cdn-images-1.medium.com/max/1125/1*_7OPgojau8hkiPUiHoGK_w.png)
+
+Overfitting can occur when we:
+
+1. Over-train or train too long
+2. Utilize a network that's too large for the dataset
+3. Use a non-comprehensive data set
+
+When we train for too long, the network starts to pay attention to progressively smaller and more minute details of the data that may not have much to do at all with the output. It starts to learn all the specifics of the given dataset as opposed to learning the intuition behind it. 
+
+Second, utilizing larger and larger networks also motivate overfitting. Since the network is more flexible it can bend it's solution into more esoteric details of the data as opposed to the big ideas or again, the intuition behind the data. 
+
+Finally, using a bad data set (for example using a set of only golden retrievers to teach a network to recognize dogs in general) for a given problem will handicap the network from generalizing. This list is not comprehensive and there are other reasons behind overfitting.
+
+So what are some techniques we can use to prevent overfitting?
+
+1. smaller networks
+2. data augmentation
+3. dropout
+4. regularization
+
+Smaller networks force the system to learn just the big details as opposed to all the smaller nuances of the data set. This should be last resort since smaller networks also decrease a model's potential to learn and solve complex problems.
+
+Data augmentation is the creation of new data to supplement existing data. An example of this is flipping, rotating, and skewing images in a dataset to provide variation. This works particularly well with image classification.
+
+Dropout is literally the dropping out of node activations when running a model. The program will ignore neurons with some probability, forcing the network to learn robust features of the data: so given some noise (in this case the loss of data) the model will still be able to perform well.
+
+Regularization is a general term for "any modiﬁcation we make to a learning algorithm that is intended to reduce its generalization error but not its training error" (deep learning book). Training error here indicates how well the model performs on the given data set to learn from. Regularization techniques range from penalizing large weights to other constraints in the model. Read in depth [here](https://www.deeplearningbook.org/contents/regularization.html).
+
+Okay great we understand what overfitting is and how to combat it. But how do we measure overfit?
+
+Introducing hold-out sets AKA the training set, validation set, and test set. In deep learning (and machine learning in general) we split our data into different sets for different tasks. There are a variety of data techniques in machine learning such as bootstrapping and k-fold cross validation but for the purpose of this project we'll only be concerned with training, validation, and test sets.
+
+Lets define what they're used for. Training sets are the data that our models will learn from. It's the data that is used by the optimizer algorithm for every epoch. Validation sets are a way to measure overfit (we'll see how in a moment). They also assist in selecting hyperparameters for our model. Finally, test sets are set aside to judge our final solution. We never use the test set until the very end. This is useful for when we want to compare different models against each other.
+
+So how do use validation sets to measure overfit? First we train our models on the training data. We receive some value for our loss (the lower the loss the more accurate our model is). We then run the validation data through our model but the model *does not update* its weights from this data, which means the model isn't learning from the validation data. We are only interested in the loss value of the model's results on the validation set.
+
+![loss_table](https://i.gyazo.com/c8c145367ba7ddaade836c5c17abc0bc.png)
+
+In the loss table above we can see that by epoch 20 we've overfit. We can tell because while our loss on the training set is low, our validation loss is higher. We can conclude that while the model is performing well on the training data, it is failing to perform as well on the validation data, thus we are not generalizing well. Note that in some cases we can overfit to the validation set as well though it is not as likely as training overfit.
+
+An example of this occurs on Kaggle, the data science competition website. Here, users get graded on a public and private test set. The public test set serves as a heuristic for users on how their model is performing. The private test set is for the final judgement (1st place, 2nd place, etc...). What ends up happening is people will make many submissions and over time overfit their models to the public leaderboard. When the private leaderboard is released they see that they have dropped many places in the ranking because their model has overfit.
+
+## Dealing with Data
+This section will cover how to split the data into training, validation, and test sets, how to deal with structured data, and how to deal with sequential data.
+
+#### Splitting Data
+
+Splitting data is relatively straight-forward. We generally want something about a 70:20:10 split or a 60:20:20 split. When dealing with a multi-class classificiation problem, we want to make sure that within each set, there are the same amount of instances of each class. So for example we would have 70 cats, 70 dogs, and 70 elephants in the training set, 20 of each in the validation set, and 10 of each in the test set.
+
+What happens if you don't have enough instances of one class to go around? You could oversample - duplicate instances of the smaller class so that the number of instances per class are more even. The downside is that this reduces the variance of this class which increases the risk of asymmetric overfitting.
+
+What happens if the data is in the form of a time series? We would want the training set to the be the earliest set of data points, the validation in the middle, and the test set to be the most recent set of data points. Why? This is so that our validation and test set show us how well our models are predicting the future datapoints.
+
+#### Structured Data
+
+Up to this point we've been talking about *unstructured* data - data that is not organized in a predefined manner. For example the RGB values in an image are unstructured data. So are the speech waveforms of the human voice. *Structured* data is the opposite. Things like the day of the week, merchandise category, movie genre, etc.... Another way to think about data is between categorical and numerical variables.
+
+Handling unstructured data seems straightforward. Everything is the same datatype so just throw it all into a neural network and let the neural network do its work. Structured data is a bit more complex to handle. We can't just have Sunday be 0 and Saturday be 6. There's no mathematical relationship that defines Saturday as 6 times Monday.
+
+An initial solution to handling this is something called *1-hot encoding*. This means that for every categorical variable we have an input node for every possible value of that category. For example, for days of the week we'll have 1 node for is-Sunday, 1 node for is-Monday, etc.... While this does solve the problem of encoding structured data there are two issues. 
+
+First of all, what happens when we have categorical data with a large cardinality? I.e. a large amount of possible values. For example, the English language has over 170,000 words in use. Do we create an input node for each word? This is inefficient. Second of all, we lose the underlying relationships between the values of the category. For example, Saturday and Friday would be very similar since they're both days people can sleep late and Saturday and Sunday would be very similar since they're both weekend days. Using 1-hot encoding doesn't allow the network to learn relationships between the category's values.
+
+This is where *Embeddings* come in. *Embeddings* are simply mathematical representations of a concept. For example, we can use a 4 dimensional vector to represent the day of the week, which means that to the machine, the day of the week will be represented as 4 numbers and it is up to the machine to learn how to encode these numbers for each day. For example, Sunday might be [0, 1, 1, 1] and Saturday might be [0, 1, 1, 0]. These two are close in 4 dimensional space and this represents their similarity as weekend days. Instead of 7 nodes, we now use 4.
+
+Embeddings are also used in NLP (Natural Language Processing) as a way to mathematically represent words. You can download pretrained embeddings to utilize in your own models; their dimensionality tends to range up to 500 (quite impressive for representing over 100,000 words).
+
+#### Sequential Data
+
+Everything we've talked about so far can be applied to networks that only need to worry about one data point at a time. One image of a cat does not affect the meaning behind another image of a cat. However, this is quite different from language where the order of words matter. For example: 
+
+>I love eating green eggs and ham.
+
+vs. 
+
+>ham I eating green eggs love and.
+
+Clearly proper order conveys proper meaning.
+
+There's a machine learning method for NLP called bag of words. Basically, we count the number each word appears and try to extrapolate meaning from that. The model performs satisfactorily for simple tasks. However, when we decide to count bigrams - sequence of two adjacent elements - instead of single words, the performance of bag of words increases. This is useful in character based languages as well such as mandarin and japanese. From this we can surmise that empirically, preserving sequential information increases AI performance.
+
+But now we want to go bigger than bag of words. We're working with *deep* neural networks. Introducing recurrent networks:
+
+![RNN](https://www.researchgate.net/profile/Ramon_Quiza/publication/234055140/figure/fig3/AS:299964002521099@1448528399394/Graph-of-a-recurrent-neural-network.png)
+
+Notice the connections from the output layer *back* to the hidden layer. Unlike *feed-forward networks* (networks that only move in one direction), this network sends data back into the network. This is because the word that came before the current word can vastly alter the overall phrase's meaning. For example: not good vs. quite good.
 
 ## Resources
 ### Comprehensive Resources

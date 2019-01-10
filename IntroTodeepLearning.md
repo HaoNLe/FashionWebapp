@@ -1,6 +1,6 @@
 
 # Introduction to Deep Learning
-Deep learning is a deep topic (pun intended). It also happens to have a large vocabulary so don't fret if you feel overwhelmed: keep calm and ask google. There are links provided throughout this document as a resource for you to read into the topics though they are not necessary. Let's dive in.
+Deep learning is a deep topic (pun intended). It also happens to have a large vocabulary so don't fret if you feel overwhelmed: keep calm and ask google. There are links provided throughout this document as a resource for you to read into the topics (it's recommended to at least skim some but not necessary). Let's dive in.
 
 ## Table of Contents
 * Overview

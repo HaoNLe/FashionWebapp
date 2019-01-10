@@ -75,7 +75,7 @@ Linear algebra is quite important for understanding machine learning. You can se
 
 ![simpleNN](https://dzone.com/storage/temp/7913025-neural-network.png)
 
-This above image introduces some new things from the previous image. 
+This above image introduces some new elements from the previous image. 
 
 There is now an extra node in each layer called a *bias node* that will always output 1. The weights for the bias nodes determine how strong the bias is. This provides flexibility to the network by providing a value that is independent of the input. For example, let's assume all nodes can have some value between 0 and 1. If the output of h1 and h2 were 0, the network's output would always be 0 in this case since any weight multiplied by 0 is 0. By introducing the bias node, h1 = h2 = 0 can result in a final output of anything between [0, 1].
 
@@ -94,9 +94,9 @@ The output of the output nodes also undergo an activation function.
 The final difference is that now there are two output nodes. One output node suffices for *binary classification* (think hotdog not hotdog) but can get clunky if you try to fit in more than two possible outcomes. For example: having an output of 
 >[0 .33] = hotdog, (.33, .67) = burger, [.67 1] = sandwich
 
-is worse for the people and machine involved as opposed to having 1 output node for each outcome. There are also mathematical reasons behind this: what if an item was half sandwich half hotdog? These two items are at the ends of the distribution and as such the machine might output a value that is in the middle, completely misclassifying the item as a burger. The reason why this happens is because there is no linear relationship between hotdogs, burgers, and sandwiches. Burgers aren't necessarily half hotdog and half sandwich so representing all three on a single scale of 0 to 1 is incorrect. This idea will be important for structured data and categorical variables (though we won't be using these for our project).
+is worse for the people and machine involved as opposed to having 1 output node for each outcome. There are also mathematical reasons behind this: what if an item was half sandwich half hotdog? These two items are at the ends of the distribution and as such the machine might output a value that is in the middle, completely misclassifying the item as a burger. The reason why this happens is because there is no linear relationship between hotdogs, burgers, and sandwiches. Burgers aren't necessarily half hotdog and half sandwich so representing all three on a single scale of 0 to 1 is incorrect. This idea is important for structured data and categorical variables (though we won't be using these for our project).
 
-Having multiple output nodes increases the flexibility in what our machine can tell us about the data. For image recognition, networks have an output node per category and this allows the network to express how likely an image is multiple things. In this example, OA1 would tell you how much the machine believes its a hotdog, and OA2 would tell you much the machine believes its a burger. If, continuing the example, both OA1 and OA2 return 1, we can conclude that the network believes the image is a hotdog and a burger. I.e. the classifier cannot tell if it is one or the other.
+Having multiple output nodes increases the flexibility in what our machine can tell us about the data. For image recognition, networks have an output node per category and this allows the network to express how likely an image is multiple things. In this example, OA1 would tell you how much the machine believes its a hotdog, and OA2 would tell you much the machine believes its a burger. If, continuing the example, both OA1 and OA2 return 1, we can conclude that the network believes the image is a hotdog and a burger i.e. the classifier cannot tell if it is one or the other.
 
 ## Activation Functions
 Some useful links if you don't want to read this section:
@@ -105,7 +105,7 @@ Some useful links if you don't want to read this section:
 * [A Practical Guide to Relu](https://medium.com/tinymind/a-practical-guide-to-relu-b83ca804f1f7)
 * [Activation Functions Cheatsheet](https://ml-cheatsheet.readthedocs.io/en/latest/activation_functions.html)
 
-Pay attention because these are important.
+Some activation functions:
 
 * Sigmoid
 * Tanh
@@ -114,7 +114,7 @@ Pay attention because these are important.
 
 Neural networks are inspired by biological neurons. These neurons take inputs and "fire" a signal to its output neurons. Whether it a signal is fired or not depends on how strong the inputs are. Likewise, activation functions determine whether or not a node in a neural network fires a signal and how strong that signal is to its downstream nodes.
 
-A common activation function is the sigmoid:
+A traditional activation function is the sigmoid:
 
 ![sigmoid](https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Sigmoid-function-2.svg/2000px-Sigmoid-function-2.svg.png)
 
@@ -132,7 +132,7 @@ Why is linear activation not so great? Let's pay attention to the derivatives in
 
 Linear functions have the same derivative regardless of its input, thus the algorithm cannot tell which direction to modify the inputs to improve. (Don't think too hard on this as we'll be going into more detail later)
 
-However this isn't the biggest issue. The biggest issue is of the mathematical sort. In a deep neural network, we can think of each hidden layer as a function that takes input from the previous layer and outputs to the next layer. So, we "stack" layers to solve a problem, which can be rephrased as we composite functions to approximate some solution function. When we composite linear functions, what we get at the end is another linear function. It doesn't matter how many linear functions you "stack" you will get a linear function at the end of it all. This severely limits what sort of problems we can solve. For more info read the article on the [Universal Approximation Theorem](https://towardsdatascience.com/can-neural-networks-really-learn-any-function-65e106617fc6).
+However this isn't the biggest issue: the biggest issue is of the mathematical sort. In a deep neural network, we can think of each hidden layer as a function that takes input from the previous layer and outputs to the next layer. We can think of this as "stacking" layers to solve a problem, which be though of as compositing functions to approximate some solution. When we composite linear functions, what we get at the end is another linear function. It doesn't matter how many linear functions you "stack" you will get a linear function at the end of it all. This severely limits what sort of problems we can solve. For more info read the article on the [Universal Approximation Theorem](https://towardsdatascience.com/can-neural-networks-really-learn-any-function-65e106617fc6).
 
 So what's the deal with ReLU then if linear activations aren't so great? Lets take a look at it's graph:
 
@@ -140,15 +140,15 @@ So what's the deal with ReLU then if linear activations aren't so great? Lets ta
 
 While the positive side is linear, the negative side is not. This introduces non-linearity into an otherwise straight line. So ReLU doesn't deal with the same problem as a naive linear activation. However there are still issues with ReLU.
 
-Let's pay attention to the negative side of ReLU's graph. The slope there is 0 regardless of close the input is to 0 when the input is negative. This can result in something called "dead" neurons. When a neuron begins to get negative input, it'll be unlikely that the neuron will ever recover out of that since gradient descent can only see that the slope is 0 (it can't tell which direction to adjust the input weights). For more info read [A Practical Guide to Relu](https://medium.com/tinymind/a-practical-guide-to-relu-b83ca804f1f7).
+Let's pay attention to the negative side of ReLU's graph. The slope there is 0 regardless of close the input is to 0 when the input is negative. This can result in something called "dead" neurons. When a neuron begins to receive negative input, it'll be unlikely that the neuron will ever recover since gradient descent can only detect that the slope is 0 (it can't tell which direction to adjust the input weights). For more info read [A Practical Guide to ReLU](https://medium.com/tinymind/a-practical-guide-to-relu-b83ca804f1f7).
 
 However the non-saturating nature of ReLU does provide a substantial boost to training speed. See this [paper](http://www.cs.toronto.edu/~fritz/absps/imagenet.pdf) page 3. Non-saturating means the activation function does not "squeeze" the input like a sigmoid or tanh does.
 
-This image graphs the variants of ReLU created to address this issue with ReLU. Notice there are now non-zero slopes associated with the negative half of the space.
+This image graphs the variants of ReLU created to address the dead neuron issue. Notice there are now non-zero slopes associated with the negative half of the space. From a probability perspective we're bringing the average output of the activation function closer to 0.
 
 ![ReLU Variants](https://i0.wp.com/laid.delanover.com/wp-content/uploads/2017/08/elu.png)
 
-Finally, another activation function for multi-class classifiers is [softmax](https://en.wikipedia.org/wiki/Softmax_function), which outputs a categorical distribution - a probability distribution over *K* different possible outcomes. So given multiple outputs, softmax takes these and turns them into values that are within [0, 1] and sum up to 1. We basically get the percentage of how confident the network is for each possible output. Example: [0.87 hotdog, 0.06 burger, 0.07 sandwich]
+Finally, an important activation function for multi-class classifiers is [softmax](https://en.wikipedia.org/wiki/Softmax_function), which outputs a categorical distribution - a probability distribution over *K* different possible outcomes. So given multiple outputs, softmax takes these and turns them into values that are within [0, 1] and sum up to 1. We basically get the percentage of how confident the network is for each possible output. Example: [0.87 hotdog, 0.06 burger, 0.07 sandwich]
 
 ## Optimization
 Some useful links if you don't want to read this section:
@@ -161,15 +161,15 @@ So we now know that neural networks are a series of node layers. Each node takes
 
 Before the algorithm can optimize it needs to know what to optimize. Let us first define a *loss function*. A loss function tells us (and the algorithm) how good the model is. For more info read [Common Loss Functions in Machine Learning](https://towardsdatascience.com/common-loss-functions-in-machine-learning-46af0ffc4d23)
 
-Something to take note of is that we do not optimize the loss function *directly*. We do not change the loss function. We change the *parameters* i.e. the *weights* of the model in the hopes that we improve the loss function's result. This is a difference between learning and pure optimization.
+Something to take note of is that we do not optimize the loss function *directly*. i.e. we do not change the loss function itself. We change the *parameters* i.e. the *weights* of the model in the hopes that we improve the loss function's result. This is a difference between learning and pure optimization.
 
 ![gradient_descent_2d](https://cdn-images-1.medium.com/max/1600/0*rBQI7uBhBKE8KT-X.png)
 
-So we have a loss function. A loss function can be visualized as a curve. We need to know in which direction to adjust the weights such that the loss function is minimized. This is where gradient descent comes in. If you recall from calculus, a gradient is the derivative of a multi-variable function. Each weight here is a variable so when we have large networks our gradients are also large in terms of complexity.
+So we have a loss function, which can be visualized as a curve. We need to know in which direction to adjust the weights such that the loss function is minimized. This is where gradient descent comes in. If you recall from calculus, a gradient is the derivative of a multi-variable function. Each weight here is a variable so when we have large networks our gradients are also large in terms of complexity.
 
 >Given f(x, y) the gradient is: (df/dx, df/dy)
 
-Remember that each layer depends on the input from another layer so our gradients can become difficult to compute as we increase the number of layers. You may have heard the term *backpropagation*. In machine learning, backpropagation is a clever implementation of the chain rule and is used to quickly calculate the gradient of neural networks.
+Remember that each layer depends on the input from another layer so our gradients can become difficult to compute as we increase the number of layers. You may have heard the term *backpropagation*. In machine learning, backpropagation is a clever implementation of the chain rule and is used to quickly calculate the gradient of neural networks. You can blackbox backpropagation. If you are curious, however, read [Michael Nielson's post on backpropagation](http://neuralnetworksanddeeplearning.com/chap2.html)
 
 Now that we have calculated the gradient, we can "see" in what direction adjust our parameters to reduce our cost function. Watch [Gradient descent, how neural networks learn](https://www.youtube.com/watch?v=IHZwWFHWa-w) for a comprehensive explanation. See the below image for an example of gradient descent in 3d:
 
@@ -177,7 +177,7 @@ Now that we have calculated the gradient, we can "see" in what direction adjust 
 
 Now how does gradient descent actually run? We know that we have a loss function and we compute the gradient to understand how to adjust our parameters. When do we adjust the parameters? How much do we adjust them by?
 
-Let us assume our network is tasked with learning to distinguish between hotdog not hotdog. Typically gradient descent begins by initializing our parameters randomly and then running each data sample through the model. It then computes the loss function output of the predicted values vs. the labeled values - basically outputs some number that indicates how accurate the model is in predicting whether an image is a hotdog or not. It then utilizes backpropagation to calculate the gradient - how does each weight affect the accuracy of our model - and adjusts the weights to make the model more accurate. Rinse and repeat.
+Let us assume our network is tasked with learning to distinguish between hotdog not hotdog. Typically gradient descent begins by initializing our parameters randomly and then running each data sample through the model. It then computes the loss function - basically outputs some number that indicates how accurate the model is by comparing the prediction vs. the actual label. It then utilizes backpropagation to calculate the gradient - how does each weight affect the accuracy of our model - and adjusts the weights to make the model more accurate. Rinse and repeat.
 
 So in our example we adjust the parameters after running through the entire dataset. We make the network compute the prediction of every datapoint before "learning" from our results. This can get extremely expensive when datasets are large. Introducing *stochastic* gradient descent [here](https://developers.google.com/machine-learning/crash-course/reducing-loss/stochastic-gradient-descent) and [here](http://deeplearning.stanford.edu/tutorial/supervised/OptimizationStochasticGradientDescent/). 
 Stochastic Gradient Descent optimizes by updating the weights or "learning" after a subset of data - called a *batch* - as opposed to the entire dataset.

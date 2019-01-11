@@ -1,6 +1,8 @@
 
 # Introduction to Deep Learning
-Deep learning is a deep topic (pun intended). It also happens to have a large vocabulary so don't fret if you feel overwhelmed: keep calm and ask google. There are links provided throughout this document as a resource for you to read into the topics (it's recommended to at least skim some but not necessary). Let's dive in.
+Deep learning is a deep topic (pun intended). It also happens to have a large vocabulary so don't fret if you feel overwhelmed: keep calm and ask google. There are links provided throughout this document as a resource for you to read into the topics (it's recommended to at least skim some but not necessary). Let's dive in. 
+
+Note: we won't be covering layers here since we'll be covering those in later docs.
 
 ## Table of Contents
 * Overview
@@ -12,7 +14,6 @@ Deep learning is a deep topic (pun intended). It also happens to have a large vo
 * Resources
 
 ## Overview
-
 #### What is machine learning?
 The ability for AI systems to acquire their own knowledge, by extracting patterns from raw data.
 

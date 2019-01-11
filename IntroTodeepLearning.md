@@ -142,7 +142,7 @@ While the positive side is linear, the negative side is not. This introduces non
 
 Let's pay attention to the negative side of ReLU's graph. The slope there is 0 regardless of close the input is to 0 when the input is negative. This can result in something called "dead" neurons. When a neuron begins to receive negative input, it'll be unlikely that the neuron will ever recover since gradient descent can only detect that the slope is 0 (it can't tell which direction to adjust the input weights). For more info read [A Practical Guide to ReLU](https://medium.com/tinymind/a-practical-guide-to-relu-b83ca804f1f7).
 
-However the non-saturating nature of ReLU does provide a substantial boost to training speed. See this [paper](http://www.cs.toronto.edu/~fritz/absps/imagenet.pdf) page 3. Non-saturating means the activation function does not "squeeze" the input like a sigmoid or tanh does.
+However the non-saturating nature of ReLU does provide a substantial boost to training speed. See this [paper](http://www.cs.toronto.edu/~fritz/absps/imagenet.pdf) page 3. Non-saturating means the activation function does not "squeeze" the input like a sigmoid or tanh does. Non-saturating functions are also resilient to the vanishing gradient problem. Read more [here](https://adventuresinmachinelearning.com/vanishing-gradient-problem-tensorflow/).
 
 This image graphs the variants of ReLU created to address the dead neuron issue. Notice there are now non-zero slopes associated with the negative half of the space. From a probability perspective we're bringing the average output of the activation function closer to 0.
 
@@ -260,7 +260,7 @@ In the loss table above we can see that by epoch 20 we've overfit. We can tell b
 An example of this occurs on Kaggle, the data science competition website. Here, users get graded on a public and private test set. The public test set serves as a heuristic for users on how their model is performing. The private test set is for the final judgement (1st place, 2nd place, etc...). What ends up happening is people will make many submissions and over time overfit their models to the public leaderboard. When the private leaderboard is released they see that they have dropped many places in the ranking because their model has overfit.
 
 ## Dealing with Data (Optional)
-This section will cover how to split the data into training, validation, and test sets, how to deal with structured data, and how to deal with sequential data.
+This section will cover how to split the data into training, validation, and test sets, normalizing data, how to deal with structured data, and how to deal with sequential data.
 
 Disclaimer: Theres a great deal more to know when it comes to working with data. This only covers the basics for deep learning. See [here](https://data.berkeley.edu/degrees/data-science-ba) for more.
 
@@ -271,6 +271,16 @@ Splitting data is relatively straight-forward. We generally want something about
 What happens if you don't have enough instances of one class to go around? You could oversample - duplicate instances of the smaller class so that the number of instances per class are more even. The downside is that this reduces the variance of this class which increases the risk of asymmetric overfitting.
 
 What happens if the data is in the form of a time series? We would want the training set to the be the earliest set of data points, the validation in the middle, and the test set to be the most recent set of data points. Why? This is so that our validation and test set show us how well our models are predicting the future datapoints.
+
+#### Normalizing Data
+
+Let's say we have two columns of data that we want to feed into a neural net: price and age. Let us assume that we're trying to predict the class of big-ticket musical instruments. An example is a Stradivarius violin. These are approximately 300 years old and are worth millions. When we pass these values into the model, it has no concept of age and money. All it knows is that there is a large 7-figure value and a smaller 3-figure value. Mathematically, which scalar will have a larger affect on the output? Let's assume as an example that the age is much more significant than price in determining the label of our data sample. This means that the machine must learn that the smaller 3 figure age values are of greater significance than the 7 figure price value. In this example it shouldn't be too hard: there are only 2 columns. But imagine if the machine had to do this with hundreds of columns.
+
+In order to combat this we preprocess the data by *normalizing* it. *Normalizing* means we transform the data such that the mean is 0 and the standard deviation is 1. This is done by subtracting the mean from every datapoint in a column and then dividing every datapoint by the standard deviation of said column. This process preserves the information relative to itself while making it easier for machine learning algorithms to learn from. Now on the initialization of a machine learning model every data column will have approximately the same significance to the output relative to each other.
+
+There are some caveats when performing this operation however. First of all is ensuring that the normalization is done uniformly across data sets. If you normalize the training set using the mean and standard deviation derived from said set, you must ensure that you normalize your validation and test set with the same values! Do not normalize the training set based on the training mean and std and then normalize the validation set based on validation mean and std. This would be akin to translating the data two different ways and expecting our model to know the difference without telling it.
+
+What we've talked about thus far takes care of the data distribution going into our input layers. What about hidden layers? The weights and activation functions of each layer change the distribution of the data as we feed it forward through the network. This can slow down the training process since every layer now has to learn from a different distribution at every step as opposed to a normalized distribution. We call this problem *internal covariate shift*. To solve this problem we implement something called *batch-normalization*. We won't be going into details on it within this document. Read [here](https://leonardoaraujosantos.gitbooks.io/artificial-inteligence/content/batch_norm_layer.html), [here](https://towardsdatascience.com/batch-normalization-theory-and-how-to-use-it-with-tensorflow-1892ca0173ad) and [here](https://towardsdatascience.com/batch-normalization-in-neural-networks-1ac91516821c) for more info.
 
 #### Structured Data
 

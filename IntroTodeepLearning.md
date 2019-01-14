@@ -7,6 +7,7 @@ Note: we won't be covering layers here since we'll be covering those in later do
 ## Table of Contents
 * Overview
 * Basic Neural Network
+* Layers
 * Activation Functions
 * Optimization
 * Generalizing Models
@@ -151,6 +152,53 @@ This image graphs the variants of ReLU created to address the dead neuron issue.
 
 Finally, an important activation function for multi-class classifiers is [softmax](https://en.wikipedia.org/wiki/Softmax_function), which outputs a categorical distribution - a probability distribution over *K* different possible outcomes. So given multiple outputs, softmax takes these and turns them into values that are within [0, 1] and sum up to 1. We basically get the percentage of how confident the network is for each possible output. Example: [0.87 hotdog, 0.06 burger, 0.07 sandwich]
 
+
+## Layers
+
+Lets briefly talk about layer types. We'll be going over fully connected, convolution, and subsampling. For more information on other layers check out [A mostly complete chart of neural networks explained](https://towardsdatascience.com/the-mostly-complete-chart-of-neural-networks-explained-3fb6f2367464)
+
+![cnn_layers](https://www.researchgate.net/profile/Yann_Lecun/publication/220320307/figure/download/fig1/AS:305682390765571@1449891769454/Architecture-of-convolutional-network-used-for-training-This-represents-one-slice-of-the.png)
+
+The image above is a basic *Convolutional Neural Network*. These are typically used for image recognition. Lets just focus on the layers for now: fully connected, convolution, and subsampling.
+
+#### Fully Connected
+![Fully connected](https://i.stack.imgur.com/BVZro.png)
+
+#### Convolution
+
+![Convolution Layer](https://i.gyazo.com/c6efc0e9b577d5b47acecadbc134a7d8.png)
+
+Check out this [great video of a basic convolutional network](https://www.youtube.com/watch?v=f0t-OCG79-U) or CNN for a visual. Note that the video also includes subsampling layers after every convolution layer and a fully connected layer at the end.
+
+* [0:00 - 0:34] Convolution Layer 1 with filter 1
+* [0:34 - 0:57] Convolution Layer 1 with filter 2
+* [0:57 - 1:01] ReLU
+* [1:01 - 1:09] Subsampling
+* [1:09 - 1:17] Convolution Layer 2 with filter 3
+* [1:17 - 1:26] Convolution Layer 2 with filter 4
+* [1:26 - 1:28] ReLU
+* [1:28 - 1:32] Subsampling
+* [1:32 - 1:43] Fully-connected
+
+#### Subsampling (or pooling layers)
+
+The video in the previous section also included subsampling layers. Subsampling is used to reduce the dimensions of the input. In other words, we're reducing the "resolution" of the features we obtained from the previous layers. In the case of a CNN we subsample the features learned through the convolution layers.
+
+Two popular pooling functions are maxpool and averagepool. Maxpool simply returns the max value of a submatrix, while average pool returns the average of a submatrix. See the image below for an example of maxpool.
+
+![maxpool](http://cs231n.github.io/assets/cnn/maxpool.jpeg)
+
+Subsampling helps with generalization and in image recognition they help to not only increase training speed (by reducing the dimensionality of the feature space) but also make the model more resilient against shifts and distortions.
+
+#### Linear activation layers
+
+This is a sidenote. PyTorch will refer to non-linear activations (sigmoid and ReLU) as layers.
+
+#### Other layers
+
+There are many other types of layers. Read this article [Residual Learning](https://cdn-images-1.medium.com/max/1600/1*pUyst_ciesOz_LUg0HocYg.png) if you want to learn more on residual learning. A network we'll be looking at called resnet34 will utilize residual layers (no residual layer knowledge required). [A mostly complete chart of neural networks explained](https://towardsdatascience.com/the-mostly-complete-chart-of-neural-networks-explained-3fb6f2367464) also goes into a variety of different network types that may interest you.
+
+
 ## Optimization
 Some useful links if you don't want to read this section:
 
@@ -181,7 +229,7 @@ Now how does gradient descent actually run? We know that we have a loss function
 Let us assume our network is tasked with learning to distinguish between hotdog not hotdog. Typically gradient descent begins by initializing our parameters randomly and then running each data sample through the model. It then computes the loss function - basically outputs some number that indicates how accurate the model is by comparing the prediction vs. the actual label. It then utilizes backpropagation to calculate the gradient - how does each weight affect the accuracy of our model - and adjusts the weights to make the model more accurate. Rinse and repeat.
 
 So in our example we adjust the parameters after running through the entire dataset. We make the network compute the prediction of every datapoint before "learning" from our results. This can get extremely expensive when datasets are large. Introducing *stochastic* gradient descent [here](https://developers.google.com/machine-learning/crash-course/reducing-loss/stochastic-gradient-descent) and [here](http://deeplearning.stanford.edu/tutorial/supervised/OptimizationStochasticGradientDescent/). 
-Stochastic Gradient Descent optimizes by updating the weights or "learning" after a subset of data - called a *batch* - as opposed to the entire dataset.
+Stochastic Gradient Descent optimizes by updating the weights or "learning" after a subset of data - called a *batch* - as opposed to the entire dataset. SGD also has the advantage of being more stable during training. Here's an analogy as to why: imagine a professor who gives feedback to a student on every mistake they make as opposed to every 1000 mistakes. It'll be much easier for the student to learn from 1 mistake as opposed to 1000 at a time.
 
 So now we know when we update the weights. What about how much do we change them? See the below image for a visualization:
 
@@ -213,7 +261,7 @@ There are other optimization methods such as [Adam](https://machinelearningmaste
 
 ## Generalizing Models
 
-So far we've learned what neural nets are, what math functions they consist of, and how they learn. Now let's talk about how sometimes our models can *overfit* the problem. Overfit happens in real life when students memorize how to do specific problems, but fail to generalize techniques to other similar problems. Example: memorizing that 2x2 is 4 but being unable to solve 2x3. The same thing can happen to neural networks. We want out models to do well with data it hasn't seen before and this is called the model's ability to *generalize*.
+So far we've learned what neural nets are, what math functions they consist of, and how they learn. Now let's talk about how sometimes our models can *overfit* the problem. Overfitting is when a model is so well tuned to the training data that it fails to generalize to real or test data. We want out models to do well with data it hasn't seen before and this is called the model's ability to *generalize*.
 
 An example of a neural network overfitting is if it can distinguish dogs but only if its long-haired, in a sitting position, and is light colored. It fails to generalize and would not recognize a running chihuahua as a dog. There can be many reasons as to why this particular model has overfit.
 
@@ -240,13 +288,13 @@ So what are some techniques we can use to prevent overfitting?
 
 Smaller networks force the system to learn just the big details as opposed to all the smaller nuances of the data set. This should be last resort since smaller networks also decrease a model's potential to learn and solve complex problems.
 
-Data augmentation is the creation of new data to supplement existing data. An example of this is flipping, rotating, and skewing images in a dataset to provide variation. This works particularly well with image classification.
+Data augmentation is the creation of new data to supplement existing data. An example of this is flipping, rotating, and skewing images in a dataset to provide variation. This works particularly well with image classification. However, we probably wouldn't want to vertically flip images when training a model to recognize dogs vs cats as images of them are almost always upright. We would want to vertically flip images for tasks such as recognizing cancer cells or classifying satellite images.
 
-Dropout is literally the dropping out of node activations when running a model. The program will ignore neurons with some probability, forcing the network to learn robust features of the data: so given some noise (in this case the loss of data) the model will still be able to perform well.
+Dropout is literally the dropping out of node activations when running a model. The program will ignore neurons with some probability, forcing the network to learn robust features of the data. Thus, given noise the model will still be able to perform well.
 
 Regularization is a general term for "any modiﬁcation we make to a learning algorithm that is intended to reduce its generalization error but not its training error" (deep learning book). Training error here indicates how well the model performs on the given data set to learn from. Regularization techniques range from penalizing large weights to other constraints in the model. Read in depth [here](https://www.deeplearningbook.org/contents/regularization.html).
 
-Okay great we understand what overfitting is and how to combat it. But how do we measure overfit?
+Okay great. We understand what overfitting is and how to combat it. But how do we measure overfit?
 
 Introducing hold-out sets AKA the training set, validation set, and test set. In deep learning (and machine learning in general) we split our data into different sets for different tasks. There are a variety of data techniques in machine learning such as bootstrapping and k-fold cross validation but for the purpose of this project we'll only be concerned with training, validation, and test sets.
 

@@ -2,17 +2,17 @@
 # Introduction to Deep Learning
 Deep learning is a deep topic (pun intended). It also happens to have a large vocabulary so don't fret if you feel overwhelmed: keep calm and ask google. There are links provided throughout this document as a resource for you to read into the topics (it's recommended to at least skim some but not necessary). Let's dive in. 
 
-Note: we won't be covering layers here since we'll be covering those in later docs.
+Note: There's quite a large amount of information here. Consuming it all in one sitting will be difficult.
 
 ## Table of Contents
-* Overview
-* Basic Neural Network
-* Activation Functions
-* Layers
-* Optimization
-* Generalizing Models
-* Dealing with data
-* Resources
+* [Overview](#Overview)
+* [Basic Neural Network](#Basic-Neural-Network)
+* [Activation Functions](#Activation-Functions)
+* [Layers](#Layers)
+* [Optimization](#Optimizations)
+* [Generalizing Models](#Generalizing-Models)
+* [Dealing With Data](#Dealing-With-Data)
+* [Resources](#Resources)
 
 ## Overview
 #### What is machine learning?
@@ -166,19 +166,24 @@ The image above is a basic *Convolutional Neural Network*. These are typically u
 
 #### Convolution
 
+Convolution layers are great for extracting information from image data. This is done by running a matrix multiply across the input data with a filter. For example if we had a 28x28 image we could run a 3x3 filter left to right and top to bottom. These filters are also learnable by the machine. See below for an example:
+
 ![Convolution Layer](https://i.gyazo.com/c6efc0e9b577d5b47acecadbc134a7d8.png)
 
-Check out this [great video of a basic convolutional network](https://www.youtube.com/watch?v=f0t-OCG79-U) or CNN for a visual. Note that the video also includes subsampling layers after every convolution layer and a fully connected layer at the end.
+You can see this animated [here](http://cs231n.github.io/convolutional-networks/#conv) (scroll down a bit).
+Here we have 3 layers of input. This is because pixels are stored as 3 values for RGB. There may be multiple filters per convolution layer. There are also parameters such as *stride*, which defines how many cells to move the filter by on each calculation, and *padding*, which sets a border of 0's around the input to allow the filters to run across the input's edges as well.
 
-* [0:00 - 0:34] Convolution Layer 1 with filter 1
+Check out this [great video of a basic convolutional network](https://www.youtube.com/watch?v=f0t-OCG79-U) or CNN for a visual of a basic CNN in action. Note that the video also includes subsampling layers after every convolution layer and a fully connected layer at the end.
+
+* [0:00 - 0:34] Convolution Layer 1 with filter 1 (padding and stride of 1)
 * [0:34 - 0:57] Convolution Layer 1 with filter 2
 * [0:57 - 1:01] ReLU
 * [1:01 - 1:09] Subsampling
 * [1:09 - 1:17] Convolution Layer 2 with filter 3
 * [1:17 - 1:26] Convolution Layer 2 with filter 4
 * [1:26 - 1:28] ReLU
-* [1:28 - 1:32] Subsampling
-* [1:32 - 1:43] Fully-connected
+* [1:28 - 1:32] Subsampling (couldn't tell if this was avgpool or maxpool. It seems more like avgpool)
+* [1:32 - 1:43] Fully-connected (I assume they ran a softmax as well)
 
 #### Subsampling (or pooling layers)
 
@@ -196,7 +201,7 @@ This is a sidenote. PyTorch will refer to activations (sigmoid and ReLU) as laye
 
 #### Other layers
 
-There are many other types of layers. Read this article [Residual Learning](https://cdn-images-1.medium.com/max/1600/1*pUyst_ciesOz_LUg0HocYg.png) if you want to learn more on residual learning. A network we'll be looking at called resnet34 will utilize residual layers (no residual layer knowledge required). [A mostly complete chart of neural networks explained](https://towardsdatascience.com/the-mostly-complete-chart-of-neural-networks-explained-3fb6f2367464) also goes into a variety of different network types that may interest you.
+There are many other types of layers. Read this article [Residual Learning](https://cdn-images-1.medium.com/max/1600/1*pUyst_ciesOz_LUg0HocYg.png) if you want to learn more on residual learning. A network we'll be looking at called resnet34 will utilize residual layers (no residual layer knowledge required). Another interesting layer type are [1x1 convolutions](https://iamaaditya.github.io/2016/03/one-by-one-convolution/). [A mostly complete chart of neural networks explained](https://towardsdatascience.com/the-mostly-complete-chart-of-neural-networks-explained-3fb6f2367464) also goes into a variety of different network types that may interest you.
 
 
 ## Optimization

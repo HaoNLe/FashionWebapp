@@ -7,8 +7,8 @@ Note: we won't be covering layers here since we'll be covering those in later do
 ## Table of Contents
 * Overview
 * Basic Neural Network
-* Layers
 * Activation Functions
+* Layers
 * Optimization
 * Generalizing Models
 * Dealing with data
@@ -192,7 +192,7 @@ Subsampling helps with generalization and in image recognition they help to not 
 
 #### Linear activation layers
 
-This is a sidenote. PyTorch will refer to non-linear activations (sigmoid and ReLU) as layers.
+This is a sidenote. PyTorch will refer to activations (sigmoid and ReLU) as layers.
 
 #### Other layers
 

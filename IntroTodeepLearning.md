@@ -9,9 +9,9 @@ Note: There's quite a large amount of information here. Consuming it all in one 
 * [Basic Neural Network](#Basic-Neural-Network)
 * [Activation Functions](#Activation-Functions)
 * [Layers](#Layers)
-* [Optimization](#Optimizations)
+* [Optimization](#Optimization)
 * [Generalizing Models](#Generalizing-Models)
-* [Dealing With Data](#Dealing-With-Data)
+* [Dealing With Data](#Dealing-with-Data)
 * [Resources](#Resources)
 
 ## Overview
@@ -313,8 +313,8 @@ In the loss table above we can see that by epoch 20 we've overfit. We can tell b
 
 An example of this occurs on Kaggle, the data science competition website. Here, users get graded on a public and private test set. The public test set serves as a heuristic for users on how their model is performing. The private test set is for the final judgement (1st place, 2nd place, etc...). What ends up happening is people will make many submissions and over time overfit their models to the public leaderboard. When the private leaderboard is released they see that they have dropped many places in the ranking because their model has overfit.
 
-## Dealing with Data (Optional)
-This section will cover how to split the data into training, validation, and test sets, normalizing data, how to deal with structured data, and how to deal with sequential data.
+## Dealing with Data
+This (optional) section will cover how to split the data into training, validation, and test sets, normalizing data, how to deal with structured data, and how to deal with sequential data.
 
 Disclaimer: Theres a great deal more to know when it comes to working with data. This only covers the basics for deep learning. See [here](https://data.berkeley.edu/degrees/data-science-ba) for more.
 

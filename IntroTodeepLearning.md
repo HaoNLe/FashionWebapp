@@ -373,6 +373,11 @@ Notice the connections from the output layer *back* to the hidden layer. Unlike 
 For more checkout [An Intro to RNNs](https://medium.com/explore-artificial-intelligence/an-introduction-to-recurrent-neural-networks-72c97bf0912).
 
 ## Resources
+
+TODO: Copy/Paste all links here.
+
+I used a lot of links throughout this doc and only some are listed here. Some links here weren't used in the doc.
+
 ### Comprehensive Resources
 * [Beginner's Guide to Neural Networks and Deep Learning - skymind](https://skymind.ai/wiki/neural-network)
 * [Neural Networks and Deep Learning - Michael Nielson](http://neuralnetworksanddeeplearning.com) - a good general overview

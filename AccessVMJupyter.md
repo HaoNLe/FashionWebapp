@@ -8,7 +8,9 @@
 
 Note: Remember to <kbd>cd</kbd> into your project directory first!
 
-Run <kbd> jupyter notebook --no-browser --port=8889 --NotebookApp.allow_remote_access=True</kbd> in your paperspace terminal
+Run this to start jupyter in your paperspace terminal
+
+<kbd> jupyter notebook --no-browser --port=8889 --NotebookApp.allow_remote_access=True</kbd> 
 
 ![jup_image](https://i.gyazo.com/b7b706095b35b00eea12d05e23914cb4.png)
 

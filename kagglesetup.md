@@ -2,29 +2,32 @@
 
 In order to train our models we first need data.
 
-There are many ways of obtaining said data. Examples include simply using `curl` or `wget` commands in your paperspace terminal to download that data directly into your machine.
+There are many ways of obtaining said data. Examples include simply using <kbd>curl</kbd> or <kbd>wget</kbd> commands in your paperspace terminal to download that data directly into your machine.
 
 Lets get data from kaggle
 
-## Setting up Kaggle API access on VM
+## Setting up Kaggle API access on VM 
+<kbd></kbd>
 1. Create a Kaggle account if you do not have one already
 2. Go to https://www.kaggle.com/username/account by clicking on your icon and then my account
-3. Scroll down to `API` (about midway) and then click `Create New API Token`
-4. This downloads `kaggle.json`. Open it.
+3. Scroll down to <kbd>API</kbd> (about midway) and then click <kbd>Create New API Token</kbd>
+4. This downloads <kbd>kaggle.json</kbd>. Open it.
 5. Login to your paperspace machine
-6. Set your kaggle username in your Unix environment: `export KAGGLE_USERNAME=username`
-7. Set your kaggle API key in your Unix environment: `export KAGGLE_KEY=xxxxxxxxxxxxxx`
-8. Download mnist fashion files: `kaggle datasets download zalando-research/fashionmnist`
+6. Set your kaggle username in your Unix environment: <kbd>export KAGGLE_USERNAME=username</kbd>
+7. Set your kaggle API key in your Unix environment: <kbd>export KAGGLE_KEY=xxxxxxxxxxxxxx</kbd>
+8. Download mnist fashion files: <kbd>kaggle datasets download zalando-research/fashionmnist</kbd>
     * note: to download other datasets just replace `zalando-research/fashionmnist` with whatever `submitter/dataname` you want to download
 
 
 ## Moving and unzipping the .zip data
 See bottom of the doc for a mini reference to some basic Unix commands.
-1. Make a directory within project directory `mkdir FashionWebapp/fashiondata` 
+1. Make a directory within project directory <kbd>mkdir FashionWebapp/fashiondata</kbd>
     * Note: I consider it good practice to create a separate folder for each data.zip to keep everything separated. Not only that, but when unzipping it can be unpredictable what comes out. Sometimes it can be just a bunch of images (which would've been bad had we not created a separate directory) or it could be already separated neatly into a training and test folder.
-2. move the zip into your newly created directory `mv fashionmnist.zip FashionWebapp/fashiondata/fashionmnist.zip`
-3. cd into said directory `cd FashionWebapp/fashiondata`
-4. unzip the data `unzip fashionmnist.zip`
+2. move the zip into your newly created directory <kbd>mv fashionmnist.zip FashionWebapp/fashiondata/fashionmnist.zip</kbd>
+3. cd into said directory <kbd>cd FashionWebapp/fashiondata</kbd>
+4. unzip the data <kbd>unzip fashionmnist.zip</kbd>
+5. Running <kbd>ls</kbd> should show the files unzipped.
+6. Now go ahead and delete the .zip file <kbd>rm fashionmnist.zip</kbd>
 
 ## Unix Commands
 You'll be needing these in order to use your own datasets.

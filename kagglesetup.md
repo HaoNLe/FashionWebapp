@@ -16,7 +16,7 @@ Lets get data from kaggle
 6. Set your kaggle username in your Unix environment: <kbd>export KAGGLE_USERNAME=username</kbd>
 7. Set your kaggle API key in your Unix environment: <kbd>export KAGGLE_KEY=xxxxxxxxxxxxxx</kbd>
 8. Download mnist fashion files: <kbd>kaggle datasets download zalando-research/fashionmnist</kbd>
-    * note: to download other datasets just replace `zalando-research/fashionmnist` with whatever `submitter/dataname` you want to download
+    * note: to download other datasets just replace <kbd>zalando-research/fashionmnist</kbd> with whatever `submitter/dataname` you want to download
 
 
 ## Moving and unzipping the .zip data
@@ -27,7 +27,10 @@ See bottom of the doc for a mini reference to some basic Unix commands.
 3. cd into said directory <kbd>cd FashionWebapp/fashiondata</kbd>
 4. unzip the data <kbd>unzip fashionmnist.zip</kbd>
 5. Running <kbd>ls</kbd> should show the files unzipped.
+    * Note: read the file names and try to figure out what they each contain
 6. Now go ahead and delete the .zip file <kbd>rm fashionmnist.zip</kbd>
+7. <kbd>cd..</kbd> To go back up into the project directory.
+
 
 ## Unix Commands
 You'll be needing these in order to use your own datasets.
